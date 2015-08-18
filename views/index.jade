@@ -1,0 +1,47 @@
+extends layout
+
+block content
+    link(href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.cs" rel="stylesheet")
+    script(src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")
+    button.btn.btn-primary.btn-lg( data-toggle="modal" data-target="#createNewModal") 新建content-tracking
+
+    div#createNewModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
+        div.modal-dialog
+            div.modal-content
+                div.modal-header
+                    button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                    h4#createNewModalLabel.modal-title
+                div.modal-body
+                    form
+                        div.btn-group(role="group"  aria-label="...")
+                            button.btn.btn-primary 广告主
+                            button.btn.btn-default 订单
+                        div.form-group
+                            label(for="keywords") 名称
+                            input#keywords.form-control(placeholder="广告主或订单名称")
+
+                        //<div class="input-daterange input-group" id="datepicker">
+                        //<input type="text" class="input-sm form-control" name="start" />
+                        //<span class="input-group-addon">to</span>
+                        //<input type="text" class="input-sm form-control" name="end" />
+                        //</div>
+
+                        div#datepicker.input-daterange.input-group
+                            input.input-sm.form-control(type="text" name="start")
+                            span.input-group-addon to
+                            input.input-sm.form-control(type="text" name="end")
+                        script.
+                            $('#sandbox-container .input-daterange').datepicker({
+                                format: "yyyy-mm-dd",
+                                autoclose: true
+                            });
+                        //div.form-group
+                        //    label(for="startDate") 开始日期
+                        //    input#startDate.form-control(placeholder="开始日期")
+                        //div.form-group
+                        //    label(for="endDate") 截止日期
+                        //    input#endDate.form-control(placeholder="截止日期")
+
+                div.modal-footer
+                    button.btn.btn-default(type="button" data-dismiss="modal") 关闭
+                    button.btn.btn-primary(type="button") 提交更改
