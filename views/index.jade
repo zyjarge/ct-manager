@@ -1,9 +1,29 @@
 extends layout
 
 block content
-    link(href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.cs" rel="stylesheet")
+    html(ng-app="creat-new")
+    link(href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet")
     script(src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")
-    button.btn.btn-primary.btn-lg( data-toggle="modal" data-target="#createNewModal") 新建content-tracking
+    button.btn.btn-primary.btn-lg(data-toggle="modal" data-target="#createNewModal") 新建content-tracking
+
+    script.
+        $(function () {
+            function reposition() {
+                var modal = $(this),
+                        dialog = modal.find('.modal-dialog');
+                modal.css('display', 'block');
+                // Dividing by two centers the modal exactly, but dividing by three
+                // or four works better for larger screens.
+                dialog.css("margin-top", Math.max(0, ($(window).height() - dialog.height()) / 2));
+            }
+
+            // Reposition when a modal is shown
+            $('.modal').on('show.bs.modal', reposition);
+            // Reposition when the window is resized
+            $(window).on('resize', function () {
+                $('.modal:visible').each(reposition);
+            });
+        });
 
     div#createNewModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
         div.modal-dialog
@@ -20,28 +40,17 @@ block content
                             label(for="keywords") 名称
                             input#keywords.form-control(placeholder="广告主或订单名称")
 
-                        //<div class="input-daterange input-group" id="datepicker">
-                        //<input type="text" class="input-sm form-control" name="start" />
-                        //<span class="input-group-addon">to</span>
-                        //<input type="text" class="input-sm form-control" name="end" />
-                        //</div>
-
                         div#datepicker.input-daterange.input-group
                             input.input-sm.form-control(type="text" name="start")
                             span.input-group-addon to
                             input.input-sm.form-control(type="text" name="end")
                         script.
-                            $('#sandbox-container .input-daterange').datepicker({
+                            $('#datepicker.input-daterange').datepicker({
                                 format: "yyyy-mm-dd",
                                 autoclose: true
                             });
-                        //div.form-group
-                        //    label(for="startDate") 开始日期
-                        //    input#startDate.form-control(placeholder="开始日期")
-                        //div.form-group
-                        //    label(for="endDate") 截止日期
-                        //    input#endDate.form-control(placeholder="截止日期")
 
                 div.modal-footer
                     button.btn.btn-default(type="button" data-dismiss="modal") 关闭
                     button.btn.btn-primary(type="button") 提交更改
+
