@@ -1,16 +1,16 @@
 extends layout
 
 block content
-    html(ng-app="creat-new")
+    html(ng-app="myApp")
     link(href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet")
     script(src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js")
+    script(src="javascripts/mod-new-create.js")
     button.btn.btn-primary.btn-lg(data-toggle="modal" data-target="#createNewModal") 新建content-tracking
 
     script.
         $(function () {
             function reposition() {
-                var modal = $(this),
-                        dialog = modal.find('.modal-dialog');
+                var modal = $(this), dialog = modal.find('.modal-dialog');
                 modal.css('display', 'block');
                 // Dividing by two centers the modal exactly, but dividing by three
                 // or four works better for larger screens.
@@ -25,7 +25,7 @@ block content
             });
         });
 
-    div#createNewModal.modal.fade(tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
+    div#createNewModal.modal.fade(ng-controller="ctl_create_new" tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
         div.modal-dialog
             div.modal-content
                 div.modal-header
@@ -33,17 +33,20 @@ block content
                     h4#createNewModalLabel.modal-title
                 div.modal-body
                     form
-                        div.btn-group(role="group"  aria-label="...")
-                            button.btn.btn-primary 广告主
-                            button.btn.btn-default 订单
+                        div
+                            label 选择类型
+                        div.btn-group( ng-model="selectedType" role="group"  aria-label="...")
+                            button.btn(ng-click="setAdvertiser()" ng-class="getAdvertiserCssClass()") 广告主
+                            button.btn(ng-click="setOrder()" ng-class="getOrderCssClass()") 订单
                         div.form-group
                             label(for="keywords") 名称
-                            input#keywords.form-control(placeholder="广告主或订单名称")
-
-                        div#datepicker.input-daterange.input-group
-                            input.input-sm.form-control(type="text" name="start")
-                            span.input-group-addon to
-                            input.input-sm.form-control(type="text" name="end")
+                            input#keywords.form-control(placeholder="{{getPlaceholder()}}")
+                        div.form-group
+                            label(for="date-range") 日期范围
+                            div#datepicker.input-daterange.input-group
+                                input.input-sm.form-control(type="text" name="start")
+                                span.input-group-addon to
+                                input.input-sm.form-control(type="text" name="end")
                         script.
                             $('#datepicker.input-daterange').datepicker({
                                 format: "yyyy-mm-dd",
@@ -52,5 +55,5 @@ block content
 
                 div.modal-footer
                     button.btn.btn-default(type="button" data-dismiss="modal") 关闭
-                    button.btn.btn-primary(type="button") 提交更改
+                    button.btn.btn-primary(type="button") 提交
 
