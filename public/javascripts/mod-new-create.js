@@ -2,18 +2,14 @@
  * Created by zhangyong on 2015/8/19.
  */
 
-var app = angular.module('myApp', []);
+var app = angular.module('ct-manager', []);
 
-app.controller('ctl_create_new', function ($scope) {
+app.controller('ctl_create_new', function ($scope,$http) {
 
     $scope.contentTracking = {
         selectedType: "order",
         startDate: "",
         endDate: ""
-    };
-
-    $scope.getList = function () {
-
     };
 
     $scope.setOrder = function () {
@@ -49,6 +45,14 @@ app.controller('ctl_create_new', function ($scope) {
     };
 
     $scope.submit_form = function () {
-        console.log("submit");
+        console.log($scope.contentTracking);
+        $http.post('/addNewRecord', $scope.contentTracking).then(console.log("success return"));
     };
+});
+
+app.controller('ctl_ct_list', function ($scope, $http) {
+    $http.get("/getAllRecords")
+        .success(function (response) {
+            $scope.ctList = response;
+        });
 });
