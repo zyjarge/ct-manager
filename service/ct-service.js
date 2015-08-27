@@ -21,6 +21,19 @@ exports.getAllList = function (cb) {
 }
 
 
-exports.addNewCtRecord = function(cb){
+exports.addNewCtRecord = function (new_ct) {
+    pool.getConnection(function (err, connection) {
+        connection.query('INSERT INTO content_tracking_base  SET ?', new_ct, function (err, result) {
+            connection.release();
+        });
 
+    });
+}
+
+exports.delCtRecord = function (ct_id) {
+    pool.getConnection(function (err, connection) {
+        connection.query('delete from content_tracking_base where id = ?', ct_id, function (err, result) {
+            connection.release();
+        });
+    });
 }

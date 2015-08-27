@@ -25,38 +25,40 @@ block content
             });
         });
 
-    div(ng-controller="ctl_create_new")
-        div#createNewModal.modal.fade( tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
-            div.modal-dialog
-                div.modal-content
-                    div.modal-header
-                        button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
-                        h4#createNewModalLabel.modal-title
-                    form(ng-submit="submit_form()")
-                        div.modal-body
-                                div
-                                    label 选择类型
-                                div.btn-group(role="group"  aria-label="...")
-                                    button.btn(type="button" ng-click="setAdvertiser()" ng-class="getAdvertiserCssClass()") 广告主
-                                    button.btn(type="button" ng-click="setOrder()" ng-class="getOrderCssClass()") 订单
-                                div.form-group
-                                    label(for="name") 名称
-                                    input#name.form-control(ng-model="contentTracking.name" placeholder="{{getPlaceholder()}}")
-                                div.form-group
-                                    label(for="date-range") 日期范围
-                                    div#datepicker.input-daterange.input-group
-                                        input.input-sm.form-control(type="text" name="start" ng-model="contentTracking.startDate")
-                                        span.input-group-addon to
-                                        input.input-sm.form-control(type="text" name="end" ng-model="contentTracking.endDate")
-                                script.
-                                    $('#datepicker.input-daterange').datepicker({
-                                        format: "yyyy-mm-dd",
-                                        autoclose: true
-                                    });
-                        div.modal-footer
-                            button.btn.btn-primary(type="submit") 提交
-                            button.btn.btn-default(type="button" data-dismiss="modal") 关闭
-        div#recordsList(ng-controller="ctl_ct_list")
+    div(ng-controller="ContentTrackingListController as ctl_ct_list")
+        div(ng-controller="newContentTrackingController as ctl_create_new")
+            div#createNewModal.modal.fade( tabindex="-1" role="dialog" aria-labelledby="createNewModalLabel" aria-hidden="true")
+                div.modal-dialog
+                    div.modal-content
+                        div.modal-header
+                            button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                            h4#createNewModalLabel.modal-title
+                        form(ng-submit="submit_form()")
+                            div.modal-body
+                                    div
+                                        label 选择类型
+                                    div.btn-group(role="group"  aria-label="...")
+                                        button.btn(type="button" ng-click="setAdvertiser()" ng-class="{true:'btn-success',false:'btn-default'}[contentTracking.type==='customer']") 广告主
+                                        button.btn(type="button" ng-click="setOrder()" ng-class="{true:'btn-success',false:'btn-default'}[contentTracking.type==='order']") 订单
+                                    div.form-group
+                                        label(for="name") 名称
+                                        input#name.form-control(ng-model="contentTracking.name" placeholder="{{getPlaceholder()}}")
+                                    div.form-group
+                                        label(for="date-range") 日期范围
+                                        div#datepicker.input-daterange.input-group
+                                            input.input-sm.form-control(type="text" name="start" ng-model="contentTracking.start_date")
+                                            span.input-group-addon to
+                                            input.input-sm.form-control(type="text" name="end" ng-model="contentTracking.end_date")
+                                    script.
+                                        $('#datepicker.input-daterange').datepicker({
+                                            format: "yyyy-mm-dd",
+                                            autoclose: true
+                                        });
+                                    //div {{contentTracking}}
+                            div.modal-footer
+                                button.btn.btn-primary(type="submit") 提交
+                                button.btn.btn-default(type="button" data-dismiss="modal") 关闭
+        div#recordsList
             table.table.table-striped(st-table="ctList")
                 thead
                     tr
@@ -64,9 +66,12 @@ block content
                         th 类型
                         th 开始日期
                         th 截止日期
+                        th 操作
                 tbody
                     tr(ng-repeat="ct in ctList")
                        td {{ct.name}}
                        td {{ct.type}}
                        td {{ct.start_date | date:'yyyy-MM-dd'}}
                        td {{ct.end_date | date:'yyyy-MM-dd'}}
+                       td
+                            button.btn.btn-sm.btn-danger(type="button" ng-click="deleteCtRecord(ct)") 删除

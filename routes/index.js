@@ -14,8 +14,15 @@ router.get('/getAllRecords', function (req, res, next) {
 });
 
 router.post('/addNewRecord', function (req, res, next) {
-    console.log(req.body);
+    var post_data= req.body;
+    ctService.addNewCtRecord(post_data);
     res.json("{info:'success!'}");
+});
+
+router.post('/deleteCTRecord', function (req, res,next) {
+    var ct_id=req.body.id;
+    console.log(ct_id);
+    ctService.delCtRecord(ct_id)
 });
 
 module.exports = router;
